@@ -4,6 +4,7 @@ import React,{Component} from 'react'
 class SearchBar extends Component{
     render(){
         return(
+          
             <div className="search-books">
             <div className="search-books-bar">
               <button className="close-search" onClick={() => this.props.searchPage(true)}>Close</button>
@@ -16,7 +17,11 @@ class SearchBar extends Component{
                   However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
                   you don't find a specific author or title. Every search is limited by search terms.
                 */}
-                <input type="text" placeholder="Search by title or author"/>
+                <input 
+                type="text" 
+                placeholder="Search by title or author"
+                value={this.props.query}
+                onChange={(event) => this.props.updateQuery(event.target.value)}/>
 
               </div>
             </div>

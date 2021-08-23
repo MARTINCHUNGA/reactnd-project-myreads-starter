@@ -1,14 +1,18 @@
 
 
+
 import React,{Component} from 'react'
 
 
-class Shelf extends Component{
+class Read extends Component{
     render(){
-      const books = this.props.myBooksInfor
+
+      const books = this.props.read
+      console.log("current",books)
+
         return(
             <div className="bookshelf">
-            <h2 className="bookshelf-title">{this.props.title}</h2>
+            <h2 className="bookshelf-title">Read</h2>
             <div className="bookshelf-books">
               <ol className="books-grid">
                 {books.map(book => {
@@ -18,8 +22,8 @@ class Shelf extends Component{
                        <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.thumbnail})` }}></div>
                           <div className="book-shelf-changer">
                              <select 
-                             value={book.shelf}
-                             onChange={e => this.props.moveBookToShelf(book, e.target.value)}
+                             value={book.shelf} 
+                             onChange={e => this.props.switchBookToShelf(book, e.target.value)}
                              >
                                 <option value="move" disabled>Move to...</option>
                                 <option value="currentlyReading">Currently Reading</option>
@@ -43,4 +47,4 @@ class Shelf extends Component{
 }
 
 
-export default Shelf
+export default Read

@@ -1,14 +1,16 @@
 
-
 import React,{Component} from 'react'
 
 
 class Shelf extends Component{
     render(){
-      const books = this.props.myBooksInfor
+
+      const books = this.props.wantToRead
+      console.log("current",books)
+
         return(
             <div className="bookshelf">
-            <h2 className="bookshelf-title">{this.props.title}</h2>
+            <h2 className="bookshelf-title">Want To Read</h2>
             <div className="bookshelf-books">
               <ol className="books-grid">
                 {books.map(book => {
@@ -19,7 +21,7 @@ class Shelf extends Component{
                           <div className="book-shelf-changer">
                              <select 
                              value={book.shelf}
-                             onChange={e => this.props.moveBookToShelf(book, e.target.value)}
+                             onChange={e => this.props.switchBookToShelf(book, e.target.value)}
                              >
                                 <option value="move" disabled>Move to...</option>
                                 <option value="currentlyReading">Currently Reading</option>
