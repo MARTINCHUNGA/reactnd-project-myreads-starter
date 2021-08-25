@@ -4,16 +4,17 @@ import AllShelves from './components/AllShelves'
 import './App.css'
 import SearchBar from './components/SearchBar'
 import Button from './components/Button'
-import Header from './components/Header'
+//import Header from './components/Header'
 import * as BooksAPI from './BooksAPI'
 import {Switch, Route, withRouter} from 'react-router-dom'
+//import Shelf from './components/Shelf'
 
 
 class BooksApp extends React.Component {
-  constructor(props) {
-    super(props);
+  // constructor(props) {
+  //   super(props);
     
-  }
+  // }
   state = {
 
     /**
@@ -38,21 +39,19 @@ class BooksApp extends React.Component {
     })
   }
 
-  
-  moveBookToShelf = (book,shelf) => {
-    const desiredBooks = this.state.books.map(myBook =>{
-      if(myBook.id === book.id) {
-        myBook.shelf = shelf;
+moveBookToShelf = (changedBook,shelf) => {
+  BooksAPI.update(changedBook,shelf).then(response =>{
+    changedBook.shelf = shelf
+    console.log("response",response)
 
-      }
-      return myBook;
-    })
-    this.setState({
-      books : desiredBooks
-    })
-  }
+    this.setState(prevState => ({
+      books: prevState.books
+      .filter(book => book.id !== changedBook.id)
+      .concat(changedBook)
+    }))
+  })
+}
 
-  
   upDateSearchBarState = () => {
     this.props.history.push("/search")
   }

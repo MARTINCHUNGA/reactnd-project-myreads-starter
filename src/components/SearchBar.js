@@ -2,7 +2,7 @@
 import React,{Component} from 'react'
 import * as BooksAPI from '../BooksAPI'
 
-import {withRouter} from 'react-router-dom'
+import {withRouter,Link} from 'react-router-dom'
 
 class SearchBar extends Component{
 
@@ -19,40 +19,58 @@ class SearchBar extends Component{
         shelfBooks: response
       })
      })
-   }
+    
+   }   
 
-
-  updateQuery = (event) =>{
+  clearSearchInput = () =>{
     this.setState({
-      query : event.target.value
-    })  
-  }
-
-
-componentDidUpdate(){
-  if(this.state.query){
-    BooksAPI.search(this.state.query).then(res=>{
-      this.setState({
-          searchedBooks:res
-      })
+      query : "",
+      searchedBooks: []
     })
   }
 
-  if(!this.state.searchedBooks.error){
-    this.state.searchedBooks.forEach(book=>{
-      this.state.shelfBooks.filter(ourBook=>{
-        if(ourBook.id===book.id){
-          book.shelf = ourBook.shelf
-          this.setState({
-            searchedBooks: [...this.state.searchedBooks, book]
-          })
-          
-        }
-      })
-    })
- 
-  }
+retriveBooks = (query) =>{
+  this.setState((prevState) => ({...prevState,query}))
+  BooksAPI.search(query).then((response) =>{
+    if(typeof response !== "undefined" && response.error !== "empty query"){
+      this.setState(()=> ({
+        searchedBooks: response
+      }))
+    }else{
+      this.setState(() => ({
+        searchedBooks : []
+      }))
+    }
+  })
 }
+
+
+
+
+// componentDidUpdate(){
+//   if(this.state.query){
+//     BooksAPI.search(this.state.query).then(res=>{
+//       this.setState({
+//           searchedBooks:res
+//       })
+//     })
+//   }
+
+//   if(!this.state.searchedBooks.error){
+//     this.state.searchedBooks.forEach(book=>{
+//       this.state.shelfBooks.filter(ourBook=>{
+//        if(ourBook.id===book.id){
+//           book.shelf = ourBook.shelf
+//           this.setState({
+//             searchedBooks: [...this.state.searchedBooks, book]
+//           })
+          
+//         }
+//       })
+//     })
+ 
+//   }
+// }
 
 handleBookShelfChange = (book,shelf) => {
   const desiredBooks = this.state.searchedBooks.map(myBook =>{
@@ -66,9 +84,7 @@ handleBookShelfChange = (book,shelf) => {
     searchedBooks : desiredBooks
   })
 }
-returnHome = ()=>{
-this.props.history.push("/")
-}
+
 
     render(){
    
@@ -79,7 +95,7 @@ this.props.history.push("/")
 
             <div className="search-books">
             <div className="search-books-bar">
-              <button className="close-search" onClick={this.returnHome}>Close</button>
+              <Link  to="/" className="close-search" onClick={this.clearSearchInput}>Close</Link>
               <div className="search-books-input-wrapper">
                 {/*
                   NOTES: The search from BooksAPI is limited to a particular set of search terms.
@@ -93,7 +109,9 @@ this.props.history.push("/")
                 type="text" 
                 placeholder="Search by title or author"
                 value={this.state.query}
-                onChange={(event) => this.updateQuery(event)}/>
+                onChange={(event) => this.retriveBooks(event.target.value)}
+                 //onChange={(event) => this.updateQuery(event)}
+                />
 
               </div>
             </div>
