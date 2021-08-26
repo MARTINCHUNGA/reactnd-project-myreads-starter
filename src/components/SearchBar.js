@@ -44,36 +44,6 @@ retriveBooks = (query) =>{
   })
 }
 
-
-
-
-
-
-// componentDidUpdate(){
-//   if(this.state.query){
-//     BooksAPI.search(this.state.query).then(res=>{
-//       this.setState({
-//           searchedBooks:res
-//       })
-//     })
-//   }
-
-//   if(!this.state.searchedBooks.error){
-//     this.state.searchedBooks.forEach(book=>{
-//       this.state.shelfBooks.filter(ourBook=>{
-//        if(ourBook.id===book.id){
-//           book.shelf = ourBook.shelf
-//           this.setState({
-//             searchedBooks: [...this.state.searchedBooks, book]
-//           })
-          
-//         }
-//       })
-//     })
- 
-//   }
-// }
-
 handleBookShelfChange = (book,shelf) => {
   const desiredBooks = this.state.searchedBooks.map(myBook =>{
     if(myBook.id === book.id) {
