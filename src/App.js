@@ -43,7 +43,7 @@ moveBookToShelf = (changedBook,shelf) => {
   BooksAPI.update(changedBook,shelf).then(response =>{
     changedBook.shelf = shelf
     console.log("response",response)
-
+    
     this.setState(prevState => ({
       books: prevState.books
       .filter(book => book.id !== changedBook.id)
@@ -64,41 +64,19 @@ moveBookToShelf = (changedBook,shelf) => {
         <Switch>
           <Route path="/search" component={()=>
             <SearchBar 
-            
             moveBookToShelf={this.moveBookToShelf}
             books={this.state.books}
             />
           }/>
-
           <Route path="/" component={()=>
           <AllShelves  
           books={this.state.books}
           moveBookToShelf={this.moveBookToShelf}
           />  }/>
-          
-       
-          {/* // <SearchBar 
-          // searchPage={this.upDateSearchBarState}
-          // moveBookToShelf={this.moveBookToShelf}
-          // books={this.state.books}
-          // />
-        
-          <div className="list-books">
-            <Header />
-
-            {/* pass the books to the shelves as props from state*/}
-            {/* <AllShelves  
-            books={this.state.books}
-            moveBookToShelf={this.moveBookToShelf}
-            />            
-           <Button  searchPage={this.upDateSearchBarState}/>
-          </div>
-        
-        <
-        */} 
-
         </Switch>
-        <Button  searchPage={this.upDateSearchBarState}/>
+        <Button  
+        searchPage={this.upDateSearchBarState}
+        />
       </div> 
     )
   }

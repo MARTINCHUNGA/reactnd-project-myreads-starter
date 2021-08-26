@@ -47,6 +47,8 @@ retriveBooks = (query) =>{
 
 
 
+
+
 // componentDidUpdate(){
 //   if(this.state.query){
 //     BooksAPI.search(this.state.query).then(res=>{
@@ -87,15 +89,31 @@ handleBookShelfChange = (book,shelf) => {
 
 
     render(){
-   
-      const booksToDisplay = this.state.searchedBooks
-      let currentShelf = "none"
+
+      //console.log(this.props.moveBookToShelf)
+      const noThumbNail = 'https://www.ppxray.com/wp-content/themes/ppxray.com/images/thumbnail.png'
+      const searchedBooks = this.state.searchedBooks
+      const shelfBooks = this.state.shelfBooks
+      const updatedBooks = searchedBooks.map(book => {
+        shelfBooks.map(shelfBook =>{
+          if(shelfBook.id === book.id){
+            book.shelf = shelfBook.shelf
+          }
+          return shelfBook 
+        })
+        return book
+      })
+
+      console.log(updatedBooks)
     
         return(
 
             <div className="search-books">
             <div className="search-books-bar">
-              <Link  to="/" className="close-search" onClick={this.clearSearchInput}>Close</Link>
+              <Link to="/">
+              <button   className="close-search" onClick={this.clearSearchInput}>Close</button>
+              </Link>
+              
               <div className="search-books-input-wrapper">
                 {/*
                   NOTES: The search from BooksAPI is limited to a particular set of search terms.
@@ -117,16 +135,18 @@ handleBookShelfChange = (book,shelf) => {
             </div>
             <div className="search-books-results">
               <ol className="books-grid">
-              {booksToDisplay.map(book => {
+              {updatedBooks.map(book => {
                     return <li key={book.id}> 
                      <div className="book">
                     <div className="book-top">
-                       <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.smallThumbnail})` }}></div>
+                       <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks?book.imageLinks.smallThumbnail : noThumbNail})` }}></div>
                           <div className="book-shelf-changer">
                              <select 
-                             defaultValue={currentShelf}
-                             //value={book.shelf}
-                             onChange={e => this.handleBookShelfChange(book, e.target.value)}
+                            //onClick={this.props.moveBookToShelf}
+                            //moveBookToShelf={this.props.moveBookToShelf}
+
+                             value={book.shelf ? book.shelf : "none"}
+                             onChange={e => this.props.moveBookToShelf(book, e.target.value)}
                              >
                                 <option value="move" disabled>Move to...</option>
                                 <option value="currentlyReading">Currently Reading</option>
